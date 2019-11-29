@@ -1,35 +1,48 @@
 import createGameField from './createGameField';
-import generateFieldWithShips from './generateFieldWithShips';
-import initializeGame from './initializeGame';
+import arrangeShips from './arrangeShips';
+import getOnFire from './getOnFire';
 
 const button = document.getElementById("start-game"),
 	field = document.getElementById("field"),
 	statisticsDiv = document.getElementById("statistics"),
-	isButtonClick = {isStarted: false},
-	generatedShips = [],
-	shipsDictionary = [],
-	onFire = initializeGame(generatedShips, isButtonClick, shipsDictionary);
-	
-function onClickStartButton(e) {
+	gameStatus = {
+		isStarted: false, 
+		generatedShips: [], 
+		counter : {
+			hits: 0, 
+			shoots: 0
+		}, 
+		shipsCount: 20
+	},
+	onFire = getOnFire(gameStatus);
+
+button.addEventListener("click", onChangeGameStatus);
+field.addEventListener("click", onFire);
+createGameField();
+
+function onChangeGameStatus(e) {
 	e.preventDefault();
-	isButtonClick.isStarted = !isButtonClick.isStarted;
-	if (isButtonClick.isStarted) {
-		button.innerText = "Finish game";
-		generateFieldWithShips(generatedShips, shipsDictionary);
-		console.log(generatedShips);
-		console.log(shipsDictionary);
-		const shoots = [...document.getElementsByClassName("dot")];
+	gameStatus.isStarted = !gameStatus.isStarted;
+
+	if (gameStatus.isStarted) {
+		const shoots = [...document.getElementsByClassName("dot")],
+			sunkenShips = [...document.getElementsByClassName("sunk")];
+
+		arrangeShips(gameStatus);
+		
 		if (shoots.length) {
 			for (let shoot of shoots) {
 				shoot.remove();
 			}
 		}
+		if (sunkenShips.length) {
+			for (let sunkenShip of sunkenShips) {
+				sunkenShip.classList.remove("sunk");
+			}
+		}
+				
+		button.innerText = "Finish game";
 		statisticsDiv.style.visibility = "hidden";
+
 	} else button.innerText = "Start new game";
 }
-
-button.addEventListener("click", onClickStartButton);
-field.addEventListener("click", onFire);
-createGameField();
-
-//переменные, которые использую один раз, назначить в index

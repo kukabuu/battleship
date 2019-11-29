@@ -9,12 +9,18 @@ export default function createGameField() {
 			column.className = `column-${i}-${j}`;
 			if (i === -1 || j === -1) column.className = column.className + " no-border";
 			if (i === -1 && j > -1) {
-				let letter = String.fromCharCode(65 + j);
-				column.innerText = letter;
+				let letter = String.fromCharCode(65 + j),
+					spanLetter = document.createElement('span');
+				spanLetter.className = 'coordinate';
+				spanLetter.innerText = letter;
+				column.append(spanLetter);
 			} 
 			if (i > -1 && j === -1) {
-				let number = (i + 1).toString(); 
-				column.innerText = number;
+				let number = (i + 1).toString(),
+					spanNumber = document.createElement('span');
+				spanNumber.className = 'coordinate';
+				spanNumber.innerText = number
+				column.append(spanNumber);
 			} 
 			row.append(column);
 		}
