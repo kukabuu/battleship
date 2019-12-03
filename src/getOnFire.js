@@ -38,6 +38,7 @@ export default function getOnFire(gameStatus) {
 }
 
 
+
 function tryToSink(shipSize, coordinate, gameStatus) {
 	const [row, column] = coordinate,
 		generatedShips = gameStatus.generatedShips;

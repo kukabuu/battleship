@@ -46,3 +46,5 @@ function onChangeGameStatus(e) {
 
 	} else button.innerText = "Start new game";
 }
+
+
